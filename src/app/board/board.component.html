@@ -1,0 +1,152 @@
+<app-navbar></app-navbar>
+
+<div class="container col-12" style="padding-top: 60px; vertical-align: auto; ">
+
+    <div class="center">
+        <h1 style="color: white;" >Task Board</h1>
+    </div>
+
+    <div class="col-12">
+        <button mat-raised-button (click)="addTaskButtonClicked()" style="background-color:#4CAF50; color: white; margin-left: 0.5%; padding: 0% 2% 0% 2%"> + Add Task</button>
+    </div>
+
+    <div *ngIf="addingTask" class="col-12" >
+    <mat-card style="margin: 1%;">
+        <form [formGroup]="form" class="mt10 ">
+    <div class="col-12 row" >
+    <div class="col-4"> 
+        <mat-form-field class="col-12" appearance="fill"> 
+        <mat-icon *ngIf="taskInputWarning" matSuffix matTooltip="The task name does not match any tasks in the system which will make it harder to find people interested in this task" color="warn">warning</mat-icon>
+        <mat-label class="textinputlabel">Task:</mat-label> 
+        <input [(ngModel)]='taskInput' (ngModelChange)="taskInputChanged()" type="text"
+        placeholder="Pick one"
+        matInput
+        formControlName="task"
+        [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete" > 
+            <mat-option *ngFor="let option of taskNameListNamesOnly"  [value]="option">   
+          {{option}} 
+            </mat-option> 
+          </mat-autocomplete> 
+        </mat-form-field> 
+
+    </div> 
+    <div class="col-4"> 
+        <mat-form-field style="width: 100%; height: 100%;box-sizing: border-box;" appearance="fill"> 
+        <mat-label >Description:</mat-label> 
+        <textarea  type="text" formControlName="description" matInput placeholder="e.g Bob"></textarea>
+        </mat-form-field> 
+    </div> 
+    <div class="col-2"> 
+        <mat-form-field appearance="fill"> 
+        <mat-label class="textinputlabel">Date Due:</mat-label> 
+
+        <input matInput formControlName="dateDue" [matDatepicker]="picker2"> 
+
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle> 
+      
+        <mat-datepicker #picker2></mat-datepicker> 
+        </mat-form-field> 
+    </div> 
+</div>
+
+    </form>
+        <button [disabled]="form.invalid" (click)="submit()" class="btn" style="margin: 5px;">Add</button>
+        <button (click)="cancel()" class="btn">Cancel</button>
+        </mat-card>
+    </div>
+  <div class="col-12 row"  style= "align-items: baseline; text-align: right; overflow: hidden;  ">
+    <div class="col-6" style="text-align: left;">
+      <button mat-raised-button style="margin-left: 1%; color: black; font-size: medium;" (click)="refresh()">Refresh <mat-icon style="color: black; font-size:140%;" disabled>refresh</mat-icon></button>
+
+    </div>
+    <div class="col-4" style=" text-align: right; float:right;">
+      <mat-checkbox style="color: white; margin-right: 3%; " [(ngModel)]='showDoneCheckbox' (ngModelChange)="filter()" >Show Done Tasks</mat-checkbox>
+        <mat-checkbox style="color: white; " [(ngModel)]='showAssignedCheckbox' (ngModelChange)="filter()" >Show Assigned Tasks</mat-checkbox>
+    </div>
+    <div class="col-2" style="text-align: right; margin-bottom: -2vh; float:right;">     
+      <mat-form-field appearance="outline" > 
+        <mat-label style="color: black; padding-left: 4px;">Filter</mat-label>
+        <input style="color: black; padding-left: 4px;" matInput (keyup)="applyFilter($event.target.value)" placeholder="Ex. Ben" #input> 
+        <mat-icon style="font-size:x-large;" matSuffix>search</mat-icon>
+      </mat-form-field> 
+    </div>
+
+    </div>
+
+        <div class="table-container;" style="margin:10px">
+
+            <table *ngIf="matTableDataSourceTasks" mat-table [dataSource]="matTableDataSourceTasks" matSort>
+
+              <ng-container  matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef ></th>
+                <td (click)=openTask(element) mat-cell *matCellDef="let element" class="colourHover">
+              <mat-icon *ngIf="element.status == 'Unassigned'" style="vertical-align: sub; font-size: 14px; margin-top: 40%;  color:grey">circle</mat-icon>
+              <mat-icon *ngIf="element.status == 'In Progress'" style="vertical-align: sub; font-size: 14px; margin-top: 40%; color: rgb(1, 236, 236)">circle</mat-icon>
+              <mat-icon *ngIf="element.status == 'Done'" style="vertical-align: sub; font-size: 14px; margin-top: 40%; color:rgb(0, 196, 0)">circle</mat-icon>
+            </td>
+            </ng-container>
+    
+              <ng-container  matColumnDef="task">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Task</th>
+                <td  (click)=openTask(element) mat-cell *matCellDef="let element" class="colourHover" [matTooltip]="element.task" matTooltipPosition="below">
+                  {{element.task}}
+                </td>
+              </ng-container>
+    
+              <ng-container  matColumnDef="dateDue">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Date Due</th>
+                <td (click)=openTask(element) mat-cell *matCellDef="let element" class="colourHover">
+                    {{element.dateDue | date: 'dd/MM/yyyy'}}
+                </td>
+              </ng-container>
+    
+              <ng-container  matColumnDef="dateCreated">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Date Created</th>
+                <td (click)=openTask(element) mat-cell *matCellDef="let element" class="colourHover">
+                    {{element.dateCreated | date: 'dd/MM/yyyy'}}
+                </td>
+              </ng-container>
+    
+              <ng-container  matColumnDef="createdBy">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Created By</th>
+                <td (click)=openTask(element) mat-cell *matCellDef="let element" [matTooltip]="element.firstName +' '+ element.lastName" class="colourHover">
+                  {{element.firstName}} {{element.lastName}}
+                </td>
+              </ng-container>
+    
+              <ng-container  matColumnDef="assignedTo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Assigned To</th>
+                <td  (click)=openTask(element) mat-cell *matCellDef="let element" class="colourHover">
+                <span *ngIf="element.assignedTo == -1">
+                  Unnasigned
+                </span>
+                <span *ngIf="element.assignedTo != -1">
+                  {{element.assignedToName}}
+                </span>
+                </td>
+         
+              </ng-container>
+    
+              <ng-container  matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
+                <td  mat-cell *matCellDef="let element" class="colourHover">
+                    <div>
+                        <button style="vertical-align: -webkit-baseline-middle;" *ngIf="element.assignedTo == -1" (click)=volunteer(element) class="btn" > Volunteer </button>
+                        <button style="vertical-align: -webkit-baseline-middle;" *ngIf="element.assignedTo != -1" disabled class="btn" > Volunteer </button>
+                        <mat-icon style="vertical-align: -webkit-baseline-middle;" *ngIf="element.createdBy == user.id || user.admin == true" matTooltip="Delete Task" (click)="deleteTask(element)" class="mat-icon-reject">cancel_icon</mat-icon>
+                      </div>
+                      
+                </td>
+              </ng-container>
+    
+    
+              <tr mat-header-row *matHeaderRowDef="matTableColumnDisplayTasks"></tr>
+              <tr mat-row *matRowDef="let row; columns: matTableColumnDisplayTasks;"></tr>
+            </table>
+    
+            <mat-paginator [pageSizeOptions]="[10,15,20]" showFirstLastButtons></mat-paginator>
+            </div>
+            
+        </div>   
+<app-task-view *ngIf="taskView"></app-task-view>

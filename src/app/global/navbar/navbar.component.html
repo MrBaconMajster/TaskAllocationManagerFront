@@ -1,0 +1,34 @@
+<mat-toolbar style="min-width: 100%; border-style: solid; border-top: 0px; border-left: 0px; border-bottom:-1px; border-right: 0px; border-color: lightgray; background-color: white; padding-left: 0px !important;position: fixed;z-index: 1;" class="mat-elevation-z2">
+
+	<nav style="width: 120%;">
+		<div class="col-12 row">
+		<div class="col-6">
+		<img style="align-self: center; vertical-align: middle; padding: 10px;" src="../../../assets/images/csislogoshort.PNG" height="50px">
+		<a mat-button class="navBarButton" routerLink="/home"> Home </a>
+		<a mat-button class="navBarButton" routerLink="/users"> Users </a>
+		<a mat-button class="navBarButton" style="border-right: 1px; border-style: solid; border-radius: 0%; border-left-color: lightgray; border-right-color: lightgray;" routerLink="/board"> Board </a>
+		<!-- <a mat-button class="navBarButton" style="border-right: 1px; border-style: solid; border-radius: 0%; border-left-color: lightgray; border-right-color: lightgray;" routerLink="/home"> Requests </a> -->
+		</div>
+		<div class="col-6" style="text-align: right;">
+		<mat-icon routerLink="/profile" style="font-size: 145%; vertical-align: middle;">account_box</mat-icon>
+		<a mat-button *ngIf="user.admin==1"  class="navBarButton"  routerLink="/admin"> 
+			<a class="navBarButton" style="border: 0px; margin: 0px; text-decoration: none; font-weight: normal;" [matBadge]="matBadge">Admin</a>
+		</a>
+		<a mat-button  class="navBarButton" style="margin-right: 10px; cursor:pointer;" (click)="logout()">Logout</a>
+		</div>
+		</div>
+		
+		
+		<!-- <a mat-button routerLink="/ourcars">Our Cars</a>
+		<a *ngIf="!admin" mat-button routerLink="/booking">Booking</a>
+		<a mat-button routerLink="/about">About Us</a>
+		<a mat-button routerLink="/contactus">Contact Us</a>
+		<a *ngIf="admin" mat-button routerLink="/management">Management</a> -->
+	</nav>
+	
+
+
+</mat-toolbar>
+<div class="app-content">
+	<router-outlet></router-outlet>
+</div>

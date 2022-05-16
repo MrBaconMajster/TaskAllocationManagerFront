@@ -1,0 +1,128 @@
+<html>
+  <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <form [formGroup]="form" class="mt10 ">
+  <div class="wrapper" id="animation" style="background-color: #2e3143a2;backdrop-filter: blur(2px); ">
+    <mat-card class="col-12 row" style="width: 100%;border: 1px solid #666871; background: white; text-align: center; width: 70vw !important;text-align: -webkit-center;">
+      <div class="col-12 row">
+      <div class="col-1"></div>
+      <div class="col-10">
+       
+      <h3 >{{task.task}}</h3>
+    </div>
+    <div class="col-1">
+      <mat-icon *ngIf="(task.createdBy == this.user.id || this.user.admin == true) && editing==false" (click)="edit()" matTooltip="Edit">edit</mat-icon>
+      <mat-icon *ngIf="(task.createdBy == this.user.id || this.user.admin == true) && editing==true" (click)="save()" matTooltip="save">check</mat-icon>
+    </div>
+    </div>
+      <!-- <h1 *ngIf="!admin" style="margin-top:30px">Add a new ticket</h1>
+      <div *ngIf="!admin" class="col-4 row" style="border: solid #1d2438 1px; background-color: #1a9393; border-radius: 5px;">
+          <mat-form-field appearance="fill" style="margin-top:15px" class="col-6">
+            <mat-label class="textinputlabel">Ticket Title:</mat-label>
+            <input type="text" formControlName="name" matInput placeholder="e.g Bob">
+          </mat-form-field>
+          <div class="col-2"></div>
+          <button class="col-3" mat-raised-button (click)="close()" style="margin-top: 27px;background: #282b3c; width: 100px;height: 37px;">Add Ticket</button>
+      </div> -->
+      <!-- <h1 *ngIf="admin">All Tickets</h1>
+      <h1 *ngIf="!admin">All My Tickets</h1> -->
+  
+
+      <div class="table-container" style="background: #f5f5f5;padding: 30px;border-radius: 10px;width: 90%; max-height: 90vh !important; "> 
+        <div class="col-12 row">
+        <p class="col-4" style="text-align: left; margin-top: -16px; margin-bottom: 0px;">
+          <mat-icon style="vertical-align: sub;" (click)="openProfileCreatedBy()">account_circle</mat-icon> 
+          {{createdBy.firstName}} {{createdBy.lastName}}
+          
+        </p>
+        <p *ngIf="editing == false || task.status =='Unassigned'" class="col-8" style="text-align: right; margin-top: -16px; margin-bottom: 0px;">
+          <mat-icon *ngIf="task.status == 'Unassigned'" style="vertical-align: sub; font-size: 14px; pointer-events: none; color:grey">circle</mat-icon>
+          <mat-icon *ngIf="task.status == 'In Progress'" style="vertical-align: sub; font-size: 14px; pointer-events: none; color: cyan">circle</mat-icon>
+          <mat-icon *ngIf="task.status == 'Done'" style="vertical-align: sub; font-size: 14px; pointer-events: none; color:green">circle</mat-icon>
+           {{task.status}}
+          </p> 
+          <div *ngIf="editing == true && task.status !='Unassigned'" class="col-5"></div>
+          <mat-form-field *ngIf="editing == true && task.status !='Unassigned'"  style="text-align: left; margin-top: -16px; margin-bottom: 0px;" class="col-3" appearance="fill">
+            <mat-label class="textinputlabel" >Status:</mat-label> 
+            <mat-select formControlName="status">
+                <mat-option *ngFor="let option of taskStatusList" [value]="option">   
+              {{option}} 
+                </mat-option>
+              </mat-select> 
+              </mat-form-field>
+      </div>
+        <mat-card class="col-12">
+      <div class="col-12 row">
+      <div class="col-6" style="text-align: left;">
+        <p class="col-12 nomargin">Description :</p>
+        <mat-card class="text-card">
+        <p *ngIf="editing == false" class="col-12">
+        {{task.description}}
+      </p>
+ 
+      <textarea *ngIf="editing == true" type="text" [ngModel]="task.description" formControlName="description" matInput placeholder="e.g Bob"></textarea>
+
+
+
+    </mat-card>
+      </div>
+      <div  class="col-2">
+        <p></p>
+        <button *ngIf="task.status == 'Unassigned' && task.createdBy == user.id" style="max-width: 100%; margin-right: -22%; margin-top: 7%; "  (click)="openRequest()" mat-raised-button class="btn"> Request </button>
+      </div>
+      <div class="col-3" style="text-align: left;">
+        <p class="col-12 nomargin" >Assigned To:</p>
+        <mat-card class="text-card">
+        <p *ngIf="assignedTo != 'Unassigned'">
+          <mat-icon (click)="openProfileAssignedTo()" style="vertical-align: sub; margin: 5px; padding-right: 5px;">account_circle</mat-icon>
+          {{assignedTo.firstName}} {{assignedTo.lastName}} 
+          
+        </p>
+        <p *ngIf="assignedTo == 'Unassigned'">Unassigned</p>
+      </mat-card>
+  
+      </div>
+      <div *ngIf="(task.createdBy == this.user.id || this.user.admin == true) && assignedTo != 'Unassigned' " class="col-1" style="width: min-content; padding: 0px; padding-left: 1%;">
+        <p>‏‏‎ ‎</p>
+        <mat-icon matTooltip="Unassign User" (click)="unAssignFromTask()" class="mat-icon-reject" >cancel</mat-icon>
+        </div>
+      <div class="col-12"></div>
+      <p></p>
+  
+      <div class="col-4" style="text-align: left;">
+        <p class="col-12 nomargin" >Date Due:</p>
+        <mat-card class="text-card" style="width: ;">
+        <p *ngIf="editing == false">{{task.dateDue | date: 'dd/MM/yyyy'}}</p>
+        <div *ngIf="editing == true">
+          <mat-form-field appearance="fill" style="max-width: 100%">
+          <input matInput [matDatepicker]="picker" (ngModelChange)="log()" placeholder="Date"
+                  autocomplete="off"
+                  name="dateDue" formControlName="dateDue">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker  [startAt]="dateDue" #picker></mat-datepicker>
+    </mat-form-field>  
+    </div>
+      </mat-card>
+      </div>
+      <div class="col-5"></div>
+      <div class="col-3" style="text-align: right;">
+        <button *ngIf="task.assignedTo != -1 && task.assignedTo == user.id && task.status != 'Done' && editing == false"   mat-raised-button (click)="markAsDone()"  style=" margin-top: 15px; max-width: 100%; min-width: fit-content; background-color: green; color: white;">Mark as Done</button>
+      </div>
+      </div>
+       </mat-card>
+  
+      </div> 
+
+      <div class="col-12">
+        <button  class="col-2" mat-raised-button (click)="close()"  style="margin-top: 15px; background-color: rgb(230, 230, 230);">Back</button>
+      </div>
+
+      
+    </mat-card>
+    
+
+  </div>
+    </form>
+  <request *ngIf="requestOpened"></request>

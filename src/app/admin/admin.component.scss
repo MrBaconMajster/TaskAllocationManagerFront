@@ -1,0 +1,129 @@
+.wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .box {
+    text-align: center;
+  }
+  
+  
+  .containersubcomp{
+  box-sizing: border-box;
+  padding: 10px 5px;
+  min-width: 100%;
+  display: flex;
+  min-height: calc(100vh - 50px);
+  background-color: #1e1e2ee3;
+  .fieldSection{
+   display: inline-block;
+   width: 24%;
+  }
+  .buttonSection{
+    display: inline-block;
+    width: 40%;
+    button{
+      min-width: 150px;
+      max-width: 40%;
+    }
+  }
+  .eFormContainer{
+    display: flex;
+    min-width: 100%;
+    .imageUploadSection,.eFormFields{
+      display: flex;
+    }
+    .imageUploadSection{
+      cursor: pointer;
+      flex: 2;
+      background: #FFFFFF 0% 0% no-repeat padding-box;
+      border: 1px solid #D4D4D4;
+      border-radius: 3px;
+      opacity: 1;
+      min-height: 200px;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      display: -webkit-box;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .uploadText{
+        text-align: center;
+        font: Regular 19px/23px Lato;
+        letter-spacing: 0;
+        color: #000000;
+        opacity: 1;
+      }
+    }
+    .eFormFields{
+        flex: 8;
+    }
+  }
+  }
+  .borderRadius{
+  border-radius: 17px;
+  }
+  .mat-icon{
+  font-size: 200%;
+  }
+  
+  td.mat-cell, td.mat-footer-cell, th.mat-header-cell
+  {
+  text-align: center;
+  }
+  
+  .gurpreet
+  {
+  opacity: 0;
+  position: absolute;
+  height: 73%;
+  top: 0;
+  left: 0;
+  background-color: green;
+  margin-top: 1%;
+  left: 1%;
+  width: 20%;
+  }
+  
+  .image {
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 10em;
+  width: 10em;
+  }
+  
+  .fieldpadding{
+  padding-right: 10px;
+  }
+  
+  
+  .mat-button{
+    background: white;
+    // border-radius: 30px;
+  }
+  
+  .mat-select-panel {
+    background: transparent !important;
+  }
+
+  ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+    background-color: white;
+    border-radius: 5px;
+  }
+ 
+
+  

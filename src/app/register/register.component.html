@@ -1,0 +1,95 @@
+<div class="container col-12" style="vertical-align: auto;   display: flex;
+justify-content: center;
+align-items: center;
+text-align: center;">
+
+    <mat-card class="col-3" style="min-width: fit-content; border: 1px solid; background-color: white; border-radius: 5vh;">
+        <div class="col-12">
+            <img class="col-6" style="width: 30%; margin: 0 auto" src="assets/images/csislogoshort.PNG" >
+        </div>
+        <div>
+            <br>
+            <h2>Register</h2>
+        </div>
+
+        <form [formGroup]="form" class="mt10 ">
+
+            <div class = "col-12 row">
+                <div class = "col-1">
+                </div>
+                <div class = "col-1">
+                    <p>Email:</p>
+                </div>
+            </div>
+            <div>
+                <input class="col-10" style="padding-left: 5px ;" type="text" placeholder="Enter here..." formControlName="email" >
+            </div>
+
+            <div class="col-12 row" style="margin-top:2.5vh">
+                <div class = "col-1">
+                </div>
+                <div class = "col-11" style="text-align: left;"> 
+                    <p class="col-8">First Name:</p>
+                </div>
+
+            </div>
+            <div>
+                <input class="col-10" type="text" style="padding-left: 5px ;" placeholder="Enter here..." formControlName="firstName">
+            </div>
+
+            <div class="col-12 row" style="margin-top:2.5vh">
+                <div class = "col-1">
+                </div>
+                <div class = "col-11" style="text-align: left;"> 
+                    <p class="col-8">Last Name:</p>
+                </div>
+
+            </div>
+            <div>
+                <input class="col-10" type="text" style="padding-left: 5px ;" placeholder="Enter here..." formControlName="lastName">
+            </div>
+
+            <div class="col-12 row" style="margin-top:2.5vh">
+                <div class = "col-1">
+                </div>
+                <div class = "col-1"> 
+                    <p class="col-1">Password:</p>
+                </div>
+
+            </div>
+            <div>
+                <input class="col-10" type="password" style="padding-left: 5px ;" placeholder="Enter here..." formControlName="password">
+            </div>
+
+            <div class="col-12 row" style="margin-top:2.5vh">
+                <div class = "col-1">
+                </div>
+                <div class = "col-11" style="text-align: left;"> 
+                    <p class="col-8">Confirm Password:</p>
+                </div>
+
+            </div>
+            <div>
+                <input class="col-10" type="password" style="padding-left: 5px ;" placeholder="Enter here..." formControlName="confirmPassword">
+            </div>
+
+
+             <div class="center" style="margin-top:1.5vh">
+                <button class="btn" style="margin: 20px; font-size:14px; min-width: fit-content;" [disabled]="!form.valid" type="submit" (click)="submit()" >Register</button>
+             </div>
+
+             <div class="center" style="margin-top:3.5vh">
+                <h6>Already Have an Account?</h6>
+               
+             </div>
+
+             <div>
+                <button class="btn" style="text-decoration: underline; margin-top: -5px; width: fit-content; font-size:16px; background-color: white; border-color: white; color:#0a75cd;" routerLink="/login" > Log In </button>
+             </div>
+             
+
+        </form>
+
+        
+    </mat-card>
+</div>

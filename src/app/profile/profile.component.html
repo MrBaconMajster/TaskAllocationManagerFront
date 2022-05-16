@@ -1,0 +1,116 @@
+<app-navbar></app-navbar>
+<div class="container col-12" style="align-self: center ;  vertical-align: auto; padding-top: 60px; display: flex;">
+    
+<mat-card class="col-5" style="min-width: 60%; max-width: 60%; border: 1px solid; background-color: white; border-radius: 1%; margin: 2%;" >
+<div *ngIf="editing==false" class="col-12 row">
+    <h2 class="center" style="color: black;">Profile</h2>
+    <h3></h3>
+    <div class = "col-5">
+        <h6 style="font-weight: bolder;" class="col-12">Name: </h6>
+        <h6 class="col-12">{{ displayedUser.firstName}} {{ displayedUser.lastName}}</h6>
+        <br>
+        <h6 style="font-weight: bolder;" class="col-12">Email: </h6>
+        <h6 class="col-12">{{ displayedUser.email}}</h6>
+        <br>
+
+    </div>
+    <div class="col-5" style="min-width:fit-content; min-height: fit-content;">
+        <h6 style="font-weight: bolder;" class="col-12">Phone Number: </h6>
+        <h6>{{ displayedUser.phoneNumber}}</h6>
+    </div>
+
+    <div class="col-1">
+        <button *ngIf="displayedUser.id == user.id || user.admin == true" mat-raised-button style="max-width: min-content; background-color: whitesmoke;" (click)="edit()"><mat-icon matTooltip="Edit">edit</mat-icon></button>
+    </div>
+    
+    <div class="col-12">
+        <mat-card class="text-card" style="margin-bottom: 2%;">
+        <h5>Research Interests</h5>
+        <ul>
+            <li style="margin: 5px;"  *ngFor="let task of userTaskInterestList">
+         
+                {{task.taskName}}
+ 
+                <br>
+            </li>
+          </ul>
+        </mat-card>
+    </div>
+
+    <div class="col-12">
+        <mat-card class="text-card">
+        <h5>About</h5>
+        <p>{{ displayedUser.about}}</p>  
+        </mat-card>
+    </div>
+
+</div>
+<div *ngIf="editing" class="col-12 row">
+    <h2 class="center" style="color: black;">Profile</h2>
+    <h3></h3>
+    <form [formGroup]="form" class="col-12 row">
+    <div class="col-5">
+        <h6 style="font-weight: bolder;" class="col-12">Name: </h6>
+        <h6 class="col-12">{{ displayedUser.firstName}} {{ displayedUser.lastName}}</h6>
+        <br>
+        <h6 style="font-weight: bolder;" class="col-12">Email: </h6>
+        <h6 class="col-12">{{ displayedUser.email}}</h6>
+        <br>
+ 
+    </div>
+    <div class="col-5" style="min-width:fit-content; min-height: fit-content;">
+        <h6 style="font-weight: bolder;" class="col-12">Phone Number: </h6>
+        <input type="text" formControlName="phoneNumber" [ngModel]=" displayedUser.phoneNumber"/>
+    </div>
+
+    <div class="col-1">
+        <button *ngIf="displayedUser.id == user.id || user.admin == true" mat-raised-button style="max-width: min-content; background-color: whitesmoke;" (click)="save()"><mat-icon matTooltip="Save">check</mat-icon></button>
+    </div>
+    
+    <div class="col-12">
+        <mat-card class="text-card" style="margin-bottom: 2%;">
+        <h5>Research Interests</h5>
+        <form [formGroup]="form2" class="col-12 row">
+        <ul style="list-style-type: none;">
+            <li style="margin: 5px;"  *ngFor="let task of taskNamesOnly">
+                <mat-checkbox name="task" formControlName={{task}} > 
+                {{task}}
+                </mat-checkbox>  
+                <br>
+            </li>
+          </ul>
+        </form>
+        </mat-card>
+    </div>
+
+    <div class="col-12">
+        <mat-card  class="text-card">
+        <h5>About</h5>
+        <textarea type="text" class="col-12" style="white-space: wrap; overflow: hidden; text-overflow: ellipsis;" [ngModel]=" displayedUser.about" formControlName="about">{{ displayedUser.about}}</textarea>
+        </mat-card>
+    
+    </div>
+</form>
+</div>
+
+
+</mat-card>
+<div class="col-4" style="margin: 10px;">
+    <br>
+    <br>
+    <mat-card *ngIf="displayedUser.id == user.id || user.admin == true" class="col-12 ">
+        <mat-card  class="mat-elevation-z8">
+            <h3 style="color: black;"
+                class="center"><strong> Upcoming Tasks </strong></h3>
+             <ng-container *ngIf="pie1Options"> 
+                <highcharts-chart [Highcharts]="pieChart1" [options]="pie1Options"
+                    style="width: 100%; height: 230px; display: block; ">
+                </highcharts-chart>
+               
+            </ng-container>
+        </mat-card>
+    </mat-card>
+</div>
+
+
+</div>

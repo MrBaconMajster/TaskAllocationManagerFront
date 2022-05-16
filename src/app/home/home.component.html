@@ -1,0 +1,258 @@
+<app-navbar></app-navbar>
+<div class="container col-12" style="vertical-align: auto; padding-top: 60px; ">
+
+    <div class="col-12 ; center">
+        <h1 style="color: white;" >Home</h1>
+    </div>
+<div class="col-12 row">
+    <div class="col-7">
+    <div class="table-container" style="margin:10px">
+      <div class="col-12 row" style="margin: 0%; margin-bottom: 2%; margin-top: 2%;">
+        <button class="col-3" mat-raised-button style=" color: black; font-size: medium; width: fit-content;" (click)="refresh()">Refresh All <mat-icon style="color: black; font-size:140%;" disabled>refresh</mat-icon></button>
+        
+        <mat-checkbox class="col-3" style="color: white; align-self: center; margin-left: 1%;" [(ngModel)]='showDoneCheckbox' (ngModelChange)="filter()">Show Done</mat-checkbox>
+      </div>
+
+      <h3 style="color: white; padding-left: 1%;">My Tasks</h3>
+      
+      <mat-tab-group mat-align-tabs="left" [selectedIndex]="0" class="col-12">
+        
+        <mat-tab  label="Assigned To Me">
+        <table *ngIf="matTableDataSourceTasks" mat-table [dataSource]="matTableDataSourceTasks" matSort>
+          
+          <ng-container  matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef ></th>
+            <td (click)=openTask(element) mat-cell *matCellDef="let element" class="colourHover">
+          <mat-icon *ngIf="element.status == 'Unassigned'" style="vertical-align: sub; font-size: 14px; margin-top: 40%;  color:grey">circle</mat-icon>
+          <mat-icon *ngIf="element.status == 'In Progress'" style="vertical-align: sub; font-size: 14px; margin-top: 40%; color: rgb(1, 236, 236)">circle</mat-icon>
+          <mat-icon *ngIf="element.status == 'Done'" style="vertical-align: sub; font-size: 14px; margin-top: 40%; color:rgb(0, 196, 0)">circle</mat-icon>
+        </td>
+        </ng-container>
+
+          <ng-container  matColumnDef="task">
+            <th mat-header-cell  *matHeaderCellDef mat-sort-header>Task</th>
+            <td (click)=openTask(element)  [matTooltip]="element.task" mat-cell *matCellDef="let element" class="colourHover">
+              {{element.task}}
+            </td>
+          </ng-container>
+
+          <ng-container  matColumnDef="dateDue">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Date Due</th>
+            <td (click)=openTask(element) mat-cell *matCellDef="let element" class="colourHover">
+                {{element.dateDue | date: 'dd/MM/yyyy'}}
+            </td>
+          </ng-container>
+
+          <ng-container  matColumnDef="dateCreated">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Date Created</th>
+            <td (click)=openTask(element) mat-cell *matCellDef="let element" class="colourHover">
+                {{element.dateCreated | date: 'dd/MM/yyyy'}}
+            </td>
+          </ng-container>
+
+          <ng-container  matColumnDef="createdBy">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Created By</th>
+            <td (click)=openTask(element) [matTooltip]="element.firstName +' '+ element.lastName" mat-cell *matCellDef="let element" class="colourHover">
+              {{element.firstName}} {{element.lastName}}
+            </td>
+          </ng-container>
+
+
+          <ng-container  matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
+            <td  mat-cell *matCellDef="let element" class="colourHover">
+                <mat-icon matTooltip="Unassign from task" (click)=unAssignFromTask(element) class="mat-icon-reject">cancel_icon</mat-icon>
+            </td>
+          </ng-container>
+
+
+          <tr mat-header-row *matHeaderRowDef="matTableColumnDisplayTasks"></tr>
+          <tr mat-row *matRowDef="let row; columns: matTableColumnDisplayTasks;"></tr>
+        </table>
+     
+        <mat-paginator [pageSizeOptions]="[5,10,15]" showFirstLastButtons></mat-paginator>
+      </mat-tab>
+
+      <mat-tab  label="Created By Me">
+        <table *ngIf="matTableDataSourceTasksCreatedByMe" mat-table [dataSource]="matTableDataSourceTasksCreatedByMe" matSort>
+
+          <ng-container  matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef ></th>
+            <td (click)=openTask(element) mat-cell *matCellDef="let element" class="colourHover">
+          <mat-icon *ngIf="element.status == 'Unassigned'" style="vertical-align: sub; font-size: 14px; margin-top: 40%; color:grey">circle</mat-icon>
+          <mat-icon *ngIf="element.status == 'In Progress'" style="vertical-align: sub; font-size: 14px; margin-top: 40%; color: rgb(1, 236, 236)">circle</mat-icon>
+          <mat-icon *ngIf="element.status == 'Done'" style="vertical-align: sub; font-size: 14px; margin-top: 40%; color:rgb(0, 196, 0)">circle</mat-icon>
+        </td>
+        </ng-container>
+
+          <ng-container  matColumnDef="task">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Task</th>
+            <td (click)=openTask(element) mat-cell [matTooltip]="element.task" *matCellDef="let element" class="colourHover">
+              {{element.task}}
+            </td>
+          </ng-container>
+
+          <ng-container  matColumnDef="dateDue">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Date Due</th>
+            <td (click)=openTask(element) mat-cell *matCellDef="let element" class="colourHover">
+                {{element.dateDue | date: 'dd/MM/yyyy'}}
+            </td>
+          </ng-container>
+
+          <ng-container  matColumnDef="dateCreated">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Date Created</th>
+            <td (click)=openTask(element) mat-cell *matCellDef="let element" class="colourHover">
+                {{element.dateCreated | date: 'dd/MM/yyyy'}}
+            </td>
+          </ng-container>
+
+          <ng-container  matColumnDef="createdBy">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Created By</th>
+            <td (click)=openTask(element) mat-cell [matTooltip]="element.firstName +' '+ element.lastName" *matCellDef="let element" class="colourHover">
+              {{element.firstName}} {{element.lastName}}
+            </td>
+          </ng-container>
+
+
+          <ng-container  matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
+            <td  mat-cell *matCellDef="let element" class="colourHover">
+                <mat-icon matTooltip="Unassign from task" (click)=unAssignFromTask(element) class="mat-icon-reject">cancel_icon</mat-icon>
+            </td>
+          </ng-container>
+
+
+          <tr mat-header-row *matHeaderRowDef="matTableColumnDisplayTasksCreatedByMe"></tr>
+          <tr mat-row *matRowDef="let row; columns: matTableColumnDisplayTasksCreatedByMe;"></tr>
+        </table>
+     
+        <mat-paginator [pageSizeOptions]="[5,10,15]" showFirstLastButtons></mat-paginator>
+      </mat-tab>
+  
+      </mat-tab-group>
+        </div>
+      </div>
+      <div class="col-5" style="margin-top: 10px;">
+        <br>
+        <br>
+        <mat-card class="col-12 ">
+            <mat-card class="mat-elevation-z8">
+                <h3 style="color: black;"
+                    class="center"><strong> Upcoming Tasks </strong></h3>
+                 <ng-container *ngIf="pie1Options"> 
+                    <highcharts-chart [Highcharts]="pieChart1" [options]="pie1Options"
+                        style="width: 100%; height: 230px; display: block; ">
+                    </highcharts-chart>
+                   
+                </ng-container>
+            </mat-card>
+        </mat-card>
+      </div>
+    </div>
+
+    <div class="col-12 row">
+        <div class="col-7">
+        <div class="table-container" style="margin:10px">
+          <h3 style="color: white; padding-left: 1%;">Task Requests</h3>
+          <mat-tab-group   [selectedIndex]="0" class="col-12">
+            
+            <mat-tab  label="Incoming Requests">
+            <table *ngIf="matTableDataSourceRequests" mat-table [dataSource]="matTableDataSourceRequests" matSort>
+    
+              <ng-container  matColumnDef="task">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Task</th>
+                <td (click)=openTaskRequest(element) [matTooltip]="element.task" mat-cell *matCellDef="let element" class="colourHover">
+                  {{element.task}}
+                </td>
+              </ng-container>
+    
+              <ng-container  matColumnDef="dateDue">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Date Due</th>
+                <td (click)=openTaskRequest(element) mat-cell *matCellDef="let element" class="colourHover">
+                    
+                    {{element.dateDue | date: 'dd/MM/yyyy'}}
+                </td>
+              </ng-container>
+    
+              <ng-container  matColumnDef="createdBy">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Sent By</th>
+                <td (click)=openTaskRequest(element)  mat-cell *matCellDef="let element" class="colourHover">
+                  
+                  {{element.senderFirstName}} {{element.senderLastName}}
+                </td>
+              </ng-container>
+    
+    
+              <ng-container  matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
+                <td  mat-cell *matCellDef="let element" class="colourHover">
+                    <mat-icon matTooltip="Accept"  (click)="acceptTaskRequest(element)" class="mat-icon-accept">check_circle</mat-icon>
+                    <mat-icon matTooltip="Decline" (click)="rejectTaskRequest(element)" class="mat-icon-reject">cancel_icon</mat-icon>
+                </td>
+              </ng-container>
+    
+    
+              <tr mat-header-row *matHeaderRowDef="matTableColumnDisplayRequests"></tr>
+              <tr mat-row *matRowDef="let row; columns: matTableColumnDisplayRequests;"></tr>
+            </table>
+            <mat-paginator [pageSizeOptions]="[5,10,15]" showFirstLastButtons></mat-paginator>
+          </mat-tab>
+          <mat-tab  label="Sent Requests">
+            <table *ngIf="matTableDataSourceRequestsSent" mat-table [dataSource]="matTableDataSourceRequestsSent" matSort>
+    
+              <ng-container  matColumnDef="task">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Task</th>
+                <td (click)=openTaskRequest(element) [matTooltip]="element.task" mat-cell *matCellDef="let element" class="colourHover">
+                  {{element.task}}
+                </td>
+              </ng-container>
+    
+              <ng-container  matColumnDef="dateDue">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Date Due</th>
+                <td (click)=openTaskRequest(element) mat-cell *matCellDef="let element" class="colourHover">
+                    
+                    {{element.dateDue | date: 'dd/MM/yyyy'}}
+                </td>
+              </ng-container>
+    
+              <ng-container  matColumnDef="sentTo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Sent To</th>
+                <td (click)=openTaskRequest(element) mat-cell *matCellDef="let element" class="colourHover">
+                  
+                  {{element.senderFirstName}} {{element.senderLastName}}
+                </td>
+              </ng-container>
+
+              <ng-container  matColumnDef="requestStatus">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+                <td (click)=openTaskRequest(element) mat-cell *matCellDef="let element" class="colourHover">
+                  
+                  {{element.requestState}} 
+                </td>
+              </ng-container>
+    
+              <ng-container  matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
+                <td  mat-cell *matCellDef="let element" class="colourHover">
+                    <mat-icon matTooltip="Cancel Request" (click)="rejectTaskRequest(element)" class="mat-icon-reject">cancel_icon</mat-icon>
+                </td>
+              </ng-container>
+    
+    
+              <tr mat-header-row *matHeaderRowDef="matTableColumnDisplayRequestsSent"></tr>
+              <tr mat-row *matRowDef="let row; columns: matTableColumnDisplayRequestsSent;"></tr>
+            </table>
+
+            <mat-paginator [pageSizeOptions]="[5,10,15]" showFirstLastButtons></mat-paginator>
+          </mat-tab>
+          <p>
+            dddd
+          </p>
+
+        </mat-tab-group>
+     
+            </div>
+          </div>
+        </div>
+</div>
+<app-task-view *ngIf="taskView"></app-task-view>

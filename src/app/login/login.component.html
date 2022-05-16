@@ -1,0 +1,64 @@
+<div class="container col-12" style="vertical-align: auto;   display: flex;
+justify-content: center;
+align-items: center;
+text-align: center;">
+
+    <mat-card class="col-3" style="min-width: fit-content; border: 1px solid; background-color: white; border-radius: 5vh;">
+        <div class="col-12">
+            <img class="col-6" style="width: 30%; margin: 0 auto; " src="assets/images/csislogoshort.PNG" >
+        </div>
+        <div>
+            <br>
+            <h2>Log In</h2>
+        </div>
+
+        <form [formGroup]="form" class="mt10 ">
+
+            <div class = "col-12 row">
+                <div class = "col-1">
+                </div>
+                <div class = "col-1">
+                    <p>Email:</p>
+                </div>
+            </div>
+            <div>
+                <input class="col-10" style="padding-left: 5px ;" type="text" placeholder="Enter here..." formControlName="email" >
+            </div>
+            <div class="col-12 row" style="margin-top:2.5vh">
+                <div class = "col-1">
+                </div>
+                <div class = "col-1"> 
+                    <p class="col-1">Password:</p>
+                </div>
+
+            </div>
+            <div>
+                <input class="col-10" type="password" style="padding-left: 5px ;" placeholder="Enter here..." formControlName="password">
+            </div>
+
+             <div class="center" style="margin-top:1.5vh">
+                <button class="btn" style="margin: 20px; font-size:14px; min-width: fit-content;" [disabled]="!form.valid" type="submit" (click)="submit()" >Log In</button>
+             </div>
+
+             <!-- <div class="center" style="margin-top:3.5vh">
+                <h6>Forgot account password?</h6>             
+             </div>
+             <div>
+                <button class="btn" style="text-decoration: underline; width: fit-content;margin-top: -5px; font-size:16px; background-color: white; border-color: white; color:#0a75cd;"  type="submit" (click)="submit()" > Reset Password </button>
+             </div> -->
+
+             <div class="center" style="margin-top:3.5vh">
+                <h6>Don't have an account?</h6>
+             </div>
+
+             <div>
+                <button class="btn" style="text-decoration: underline; width: fit-content; font-size:16px; margin-top: -5px; background-color: white; border-color: white; color:#0a75cd;"  routerLink="/register" routerLinkActive="router-link-active"  > Sign Up </button>
+             </div>
+
+             
+
+        </form>
+
+        
+    </mat-card>
+</div>
