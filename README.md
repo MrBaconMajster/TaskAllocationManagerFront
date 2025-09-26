@@ -2,26 +2,21 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.7.
 
-## Development server
+## Functionality
+This website serves as a task tracking application similar to a small social media website to help researchers allocate tasks by allowing users to select their expertise and filter possible candidates based on their qualities. 
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Core actions a user could do is :
 
-## Code scaffolding
+- Creating an account, which needs to be approved by an admin
+- Posting a task on a board with descriptions and filters
+- Request other users to review said task
+- Track their current tasks with a dashboard
+- Receive notifications of current tasks and tasks that are due soon
+- Accept / Reject review tasks
+- Customise their profiles (images, descriptions, research qualifications / specialties )
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Additionally an admin user is capable of :
+- Deleting / Banning users
+- Moderating the task board
+- Having insights into other profiles and their tasks unlike regular users. 
